@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Donor Registration</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    height:100vh;
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    background-image:url("https://images.unsplash.com/photo-1505751172876-fa1923c5c528");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.container{
+    background:rgba(255,255,255,0.88);
+    padding:35px 40px;
+    border-radius:12px;
+    width:340px;
+}
+
+h2{
+    color:#c1121f;
+    margin-bottom:20px;
+}
+
+input, select{
+    padding:10px;
+    width:100%;
+    margin-bottom:12px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    box-sizing:border-box;
+    font-size:14px;
+}
+
+button{
+    padding:12px 30px;
+    background:#e63946;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:16px;
+    width:100%;
+    margin-top:5px;
+}
+
+button:hover{
+    background:#c1121f;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🩸 Donor Registration</h2>
+
+<form id="registerForm">
+
+    <input type="text"   id="name"               placeholder="Full Name"          required>
+    <input type="email"  id="email"              placeholder="Email"               required>
+    <input type="tel"    id="phone"              placeholder="Phone Number (10 digits)" maxlength="10" required>
+    <input type="text"   id="blood_group"        placeholder="Blood Group (e.g. A+)" required>
+    <input type="text"   id="district"           placeholder="District"            required>
+    <input type="text"   id="city"               placeholder="City"                required>
+    <input type="text"   id="area"               placeholder="Area / Locality"     required>
+    <input type="text"   id="health_status"      placeholder="Health Status (Good/Fair)" required>
+    <input type="date"   id="last_donation_date" placeholder="Last Donation Date">
+
+    <select id="availability">
+        <option value="">-- Availability --</option>
+        <option value="Yes">Yes - Available to Donate</option>
+        <option value="No">No - Not Available</option>
+    </select>
+
+    <button type="submit">Register as Donor</button>
+
+</form>
+
+</div>
+
+<script>
+
+document.getElementById("registerForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    fetch("http://localhost:5000/register",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({
+            name:               document.getElementById("name").value,
+            email:              document.getElementById("email").value,
+            phone:              document.getElementById("phone").value,
+            blood_group:        document.getElementById("blood_group").value,
+            district:           document.getElementById("district").value,
+            city:               document.getElementById("city").value,
+            area:               document.getElementById("area").value,
+            health_status:      document.getElementById("health_status").value,
+            last_donation_date: document.getElementById("last_donation_date").value,
+            availability:       document.getElementById("availability").value
+        })
+    })
+    .then(res=>res.text())
+    .then(data=>{
+        alert(data);
+        if(data === "Donor Registered Successfully"){
+            document.getElementById("registerForm").reset();
+        }
+    })
+    .catch(()=>alert("Server not running"));
+});
+
+</script>
+
+</body>
+</html>

@@ -95,13 +95,14 @@ district:district
 .then(res=>res.json())
 .then(data=>{
 
-let table="<tr><th>Name</th><th>Blood</th><th>City</th></tr>";
+let table="<tr><th>Name</th><th>Blood</th><th>City</th><th>Action</th></tr>";
 
 data.forEach(d=>{
 table+=`<tr>
 <td>${d.name}</td>
 <td>${d.blood_group}</td>
 <td>${d.city}</td>
+<td><button onclick="requestDirect('${d.phone}')">Send Request</button></td>
 </tr>`;
 });
 
@@ -109,6 +110,36 @@ document.getElementById("result").innerHTML=table;
 
 });
 
+}
+
+function requestDirect(donorPhone) {
+    if (!donorPhone || donorPhone === "undefined") {
+        alert("This donor has not provided a valid phone number.");
+        return;
+    }
+
+    const userName = prompt("📝 Enter your Name (Patient/Relative):");
+    if (!userName) return;
+
+    const userContact = prompt("📱 Enter your Contact Number:");
+    if (!userContact) return;
+
+    const hospital = prompt("🏥 Enter Hospital Name & City:");
+    if (!hospital) return;
+
+    fetch("http://localhost:5000/request_direct", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            donorPhone: donorPhone,
+            userName: userName,
+            userContact: userContact,
+            hospital: hospital
+        })
+    })
+    .then(res => res.text())
+    .then(data => alert(data))
+    .catch(() => alert("Error connecting to server."));
 }
 
 </script>
