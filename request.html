@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Blood Request</title>
+
+<style>
+
+body{
+    font-family: Arial;
+
+    height:100vh;
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+
+    background-image:url("https://images.unsplash.com/photo-1505751172876-fa1923c5c528");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.container{
+    background:rgba(255,255,255,0.85);
+    padding:30px;
+    border-radius:10px;
+}
+
+input{
+    padding:10px;
+    width:250px;
+}
+
+button{
+    padding:10px 20px;
+    background:red;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Blood Request Form</h2>
+
+<form id="requestForm">
+
+<input type="text" id="patient" placeholder="Patient Name"><br><br>
+
+<input type="text" id="blood" placeholder="Blood Group Needed"><br><br>
+
+<input type="text" id="district" placeholder="District"><br><br>
+
+<input type="text" id="city" placeholder="City"><br><br>
+
+<input type="text" id="hospital" placeholder="Hospital"><br><br>
+
+<input type="text" id="contact" placeholder="Contact Number"><br><br>
+
+<button type="submit">Request Blood</button>
+
+</form>
+
+</div>
+
+
+<script>
+
+document.getElementById("requestForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+fetch("http://localhost:5000/request",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+patient_name:document.getElementById("patient").value,
+blood_group:document.getElementById("blood").value,
+district:document.getElementById("district").value,
+city:document.getElementById("city").value,
+hospital:document.getElementById("hospital").value,
+contact:document.getElementById("contact").value
+})
+})
+.then(res=>res.text())
+.then(data=>alert(data));
+
+});
+
+</script>
+
+</body>
+</html>

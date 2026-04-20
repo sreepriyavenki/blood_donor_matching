@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Search Donor</title>
+
+<style>
+
+body{
+    font-family: Arial;
+
+    height:100vh;
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+
+    background-image:url("https://images.unsplash.com/photo-1505751172876-fa1923c5c528");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.container{
+    background:rgba(255,255,255,0.85);
+    padding:30px;
+    border-radius:10px;
+}
+
+input{
+    padding:10px;
+    margin:5px;
+    width:200px;
+}
+
+button{
+    padding:10px 20px;
+    background:red;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+table{
+    margin-top:30px;
+    border-collapse:collapse;
+    background:white;
+}
+
+td,th{
+    border:1px solid black;
+    padding:8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Search Blood Donor</h2>
+
+<input type="text" id="blood" placeholder="Blood Group">
+<input type="text" id="district" placeholder="District">
+
+<br><br>
+
+<button onclick="search()">Search</button>
+
+</div>
+
+<table id="result"></table>
+
+<script>
+
+function search(){
+
+const blood=document.getElementById("blood").value;
+const district=document.getElementById("district").value;
+
+fetch("http://localhost:5000/search",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+blood_group:blood,
+district:district
+})
+})
+
+.then(res=>res.json())
+.then(data=>{
+
+let table="<tr><th>Name</th><th>Blood</th><th>City</th></tr>";
+
+data.forEach(d=>{
+table+=`<tr>
+<td>${d.name}</td>
+<td>${d.blood_group}</td>
+<td>${d.city}</td>
+</tr>`;
+});
+
+document.getElementById("result").innerHTML=table;
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

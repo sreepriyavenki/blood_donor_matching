@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Menu Page</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    text-align:center;
+    margin:0;
+    height:100vh;
+    background-image: url("https://images.unsplash.com/photo-1505751172876-fa1923c5c528");
+    background-size: cover;
+}
+
+h1{
+    color:black;
+    padding-top:100px;
+}
+
+.menu{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin-top:40px;
+}
+
+.menu-btn{
+    padding:12px 20px;
+    background-color:#e63946;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+    font-size:18px;
+}
+
+.menu-btn:hover{
+    background-color:#c1121f;
+}
+
+</style>
+</head>
+
+<body>
+<div style="position:absolute; top:20px; right:20px;">
+<a href="notification.html">
+<button>Notifications</button>
+</a>
+</div>
+
+<h1>Blood Donation System</h1>
+
+<div class="menu">
+
+<a href="index.html" class="menu-btn">Donor Registration</a>
+
+<a href="search.html" class="menu-btn">Search Donor</a>
+
+<a href="request.html" class="menu-btn">Blood Request</a>
+
+<a href="auth.html" class="menu-btn">Logout</a>
+
+</div>
+
+</body>
+</html>

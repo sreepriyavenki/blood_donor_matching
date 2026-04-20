@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Blood Request Notifications</title>
+
+<style>
+
+body{
+font-family: Arial;
+
+height:100vh;
+margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+
+background-image:url("https://images.unsplash.com/photo-1505751172876-fa1923c5c528");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+}
+
+.container{
+background:rgba(255,255,255,0.85);
+padding:30px;
+border-radius:10px;
+}
+
+button{
+padding:10px 20px;
+background:red;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+table{
+margin-top:20px;
+border-collapse:collapse;
+background:white;
+}
+
+td,th{
+border:1px solid black;
+padding:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Blood Request Notifications</h2>
+</div>
+
+<table id="table"></table>
+
+<script>
+
+window.onload = function(){
+
+const district = localStorage.getItem("district");
+
+fetch("http://localhost:5000/notifications",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({district:district})
+})
+
+.then(res=>res.json())
+.then(data=>{
+
+let html="<tr><th>Patient</th><th>Blood</th><th>Hospital</th><th>Action</th></tr>";
+
+data.forEach(r=>{
+
+html+=`
+<tr>
+<td>${r.patient_name}</td>
+<td>${r.blood_group}</td>
+<td>${r.hospital}</td>
+<td><button onclick="accept(${r.id})">Accept</button></td>
+</tr>
+`;
+
+});
+
+document.getElementById("table").innerHTML=html;
+
+});
+
+}
+
+
+function accept(id){
+
+fetch("http://localhost:5000/accept",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({id:id})
+})
+.then(res=>res.text())
+.then(data=>{
+alert(data);
+location.reload();
+});
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Authentication</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    height:100vh;
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    background-image: url("https://images.unsplash.com/photo-1505751172876-fa1923c5c528");
+    background-size: cover;
+}
+
+#signupForm, #loginForm{
+    background: rgba(255,255,255,0.85);
+    padding:30px;
+    border-radius:10px;
+}
+
+input{
+    padding:10px;
+    width:250px;
+}
+
+button{
+    padding:10px 25px;
+    background:red;
+    color:white;
+    border:none;
+}
+
+a{
+    cursor:pointer;
+    color:blue;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIGNUP -->
+<div id="signupForm">
+
+<h2>Sign Up</h2>
+
+<input type="email" id="s_email" placeholder="Email"><br><br>
+<input type="password" id="s_password" placeholder="Password"><br><br>
+<input type="password" id="s_confirm" placeholder="Confirm Password"><br><br>
+
+<button onclick="signup()">Sign Up</button>
+
+<p>
+Already have an account?
+<a onclick="showLogin()">Login</a>
+</p>
+
+</div>
+
+<!-- LOGIN -->
+<div id="loginForm" style="display:none;">
+
+<h2>Login</h2>
+
+<input type="email" id="l_email" placeholder="Email"><br><br>
+<input type="password" id="l_password" placeholder="Password"><br><br>
+
+<button onclick="login()">Login</button>
+
+<p>
+Don't have an account?
+<a onclick="showSignup()">Sign Up</a>
+</p>
+
+</div>
+
+<script>
+
+function showLogin(){
+document.getElementById("signupForm").style.display="none";
+document.getElementById("loginForm").style.display="block";
+}
+
+function showSignup(){
+document.getElementById("loginForm").style.display="none";
+document.getElementById("signupForm").style.display="block";
+}
+
+function signup(){
+
+const email=document.getElementById("s_email").value;
+const password=document.getElementById("s_password").value;
+const confirm=document.getElementById("s_confirm").value;
+
+if(password!==confirm){
+alert("Passwords do not match");
+return;
+}
+
+fetch("http://localhost:5000/signup",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+email:email,
+password:password
+})
+})
+.then(res=>res.text())
+.then(data=>{
+alert(data);
+
+/* After signup open menu page */
+window.location.href="menu.html";
+
+})
+.catch(()=>{
+alert("Server not running");
+});
+
+}
+
+function login(){
+
+const email=document.getElementById("l_email").value;
+const password=document.getElementById("l_password").value;
+
+fetch("http://localhost:5000/login",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+email:email,
+password:password
+})
+})
+.then(res=>res.text())
+.then(data=>{
+alert(data);
+
+if(data==="Login Successful"){
+window.location.href="menu.html";
+}
+
+})
+.catch(()=>{
+alert("Server not running");
+});
+
+}
+
+</script>
+
+</body>
+</html>
