@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #EF4444; /* Vivid Red */
+  --primary-hover: #DC2626;
+  --bg-gradient-start: #1e1b4b;
+  --bg-gradient-end: #312e81;
+  --surface: rgba(255, 255, 255, 0.08); /* Glass surface */
+  --surface-hover: rgba(255, 255, 255, 0.12);
+  --border: rgba(255, 255, 255, 0.2);
+  --text-main: #f8fafc;
+  --text-muted: #cbd5e1;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    color: var(--text-main);
+    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Base Glassmorphism Container */
+.container {
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 40px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 400px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Wider container for tables if needed */
+.container-wide {
+    max-width: 800px;
+}
+
+h1, h2 {
+    color: #fff;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+/* Inputs & Forms */
+input, select {
+    padding: 12px 16px;
+    width: 100%;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input::placeholder {
+    color: var(--text-muted);
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+}
+
+option {
+    color: #000; /* dropdown options usually need dark text on Windows */
+}
+
+/* Buttons */
+button {
+    padding: 14px 24px;
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.4);
+}
+
+button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.5);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Links */
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+a:hover {
+    color: #f87171;
+    text-decoration: underline;
+}
+
+p {
+    color: var(--text-muted);
+}
+
+/* Table Design */
+table {
+    margin-top: 30px;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px;
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    animation: fadeInUp 0.8s ease-out;
+}
+
+th, td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    color: #fff;
+}
+
+th {
+    background: rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+
+tr {
+    transition: background-color 0.2s ease;
+}
+
+tr:hover {
+    background: var(--surface-hover);
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+table button {
+    padding: 8px 16px;
+    width: auto;
+    font-size: 0.9rem;
+    box-shadow: none;
+}
+
+/* Utilities */
+.toggle-text {
+    margin-top: 20px;
+    font-size: 0.95rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

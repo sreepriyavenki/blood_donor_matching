@@ -1,67 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Menu Page</title>
-
-<style>
-
-body{
-    font-family: Arial;
-    text-align:center;
-    margin:0;
-    height:100vh;
-    background-image: url("https://images.unsplash.com/photo-1505751172876-fa1923c5c528");
-    background-size: cover;
-}
-
-h1{
-    color:black;
-    padding-top:100px;
-}
-
-.menu{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    margin-top:40px;
-}
-
-.menu-btn{
-    padding:12px 20px;
-    background-color:#e63946;
-    color:white;
-    text-decoration:none;
-    border-radius:5px;
-    font-size:18px;
-}
-
-.menu-btn:hover{
-    background-color:#c1121f;
-}
-
-</style>
+    <title>Dashboard | Blood Donor</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-container {
+            max-width: 600px;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .menu-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
+            padding: 24px 20px;
+            border-radius: 12px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .menu-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4);
+        }
+        .menu-btn span {
+            font-size: 2rem;
+        }
+        .top-right {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .top-right a {
+            background: rgba(0,0,0,0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+        .top-right a:hover {
+            background: var(--primary);
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>
-<div style="position:absolute; top:20px; right:20px;">
-<a href="notification.html">
-<button>Notifications</button>
-</a>
-</div>
+    <div class="top-right">
+        <a href="notification.html">🔔 Notifications</a>
+    </div>
 
-<h1>Blood Donation System</h1>
-
-<div class="menu">
-
-<a href="register.html" class="menu-btn">Donor Registration</a>
-
-<a href="search.html" class="menu-btn">Search Donor</a>
-
-<a href="request.html" class="menu-btn">Blood Request</a>
-
-<a href="auth.html" class="menu-btn">Logout</a>
-
-</div>
-
+    <div class="container dashboard-container">
+        <h1>🩸 Blood Donation System</h1>
+        <p>Save a life today. What would you like to do?</p>
+        
+        <div class="menu-grid">
+            <a href="register.html" class="menu-btn">
+                <span>📝</span>
+                Donor Registration
+            </a>
+            <a href="search.html" class="menu-btn">
+                <span>🔍</span>
+                Search Donor
+            </a>
+            <a href="request.html" class="menu-btn">
+                <span>🏥</span>
+                Blood Request
+            </a>
+            <a href="auth.html" class="menu-btn" style="background: rgba(0,0,0,0.2);">
+                <span>🚪</span>
+                Logout
+            </a>
+        </div>
+    </div>
 </body>
 </html>

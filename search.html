@@ -2,114 +2,73 @@
 <html>
 <head>
 <title>Search Donor</title>
-
+<link rel="stylesheet" href="style.css">
 <style>
-
-body{
-    font-family: Arial;
-
-    height:100vh;
-    margin:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    text-align:center;
-
-    background-image:url("https://images.unsplash.com/photo-1505751172876-fa1923c5c528");
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-}
-
-.container{
-    background:rgba(255,255,255,0.85);
-    padding:30px;
-    border-radius:10px;
-}
-
-input{
-    padding:10px;
-    margin:5px;
-    width:200px;
-}
-
-button{
-    padding:10px 20px;
-    background:red;
-    color:white;
-    border:none;
-    cursor:pointer;
-}
-
-table{
-    margin-top:30px;
-    border-collapse:collapse;
-    background:white;
-}
-
-td,th{
-    border:1px solid black;
-    padding:8px;
-}
-
+    .flex-inputs {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    @media (max-width: 450px) {
+        .flex-inputs { flex-direction: column; gap: 0; }
+    }
 </style>
-
 </head>
 
 <body>
 
-<div class="container">
+<div class="container container-wide">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+        <h2 style="margin:0;">🔍 Search Blood Donors</h2>
+        <a href="menu.html" style="font-size:0.9rem; background:rgba(255,255,255,0.1); padding:8px 16px; border-radius:8px;">Back</a>
+    </div>
 
-<h2>Search Blood Donor</h2>
+    <div class="flex-inputs">
+        <input type="text" id="blood" placeholder="Blood Group (e.g. O+)">
+        <input type="text" id="district" placeholder="District">
+    </div>
 
-<input type="text" id="blood" placeholder="Blood Group">
-<input type="text" id="district" placeholder="District">
+    <button onclick="search()" style="max-width: 200px;">Search</button>
 
-<br><br>
-
-<button onclick="search()">Search</button>
-
+    <div style="overflow-x: auto; width: 100%;">
+        <table id="result"></table>
+    </div>
 </div>
 
-<table id="result"></table>
-
 <script>
-
 function search(){
+    const blood=document.getElementById("blood").value;
+    const district=document.getElementById("district").value;
 
-const blood=document.getElementById("blood").value;
-const district=document.getElementById("district").value;
+    if(!blood || !district) {
+        alert("Please enter both Blood Group and District");
+        return;
+    }
 
-fetch("http://localhost:5000/search",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-blood_group:blood,
-district:district
-})
-})
+    fetch("http://localhost:5000/search",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({ blood_group:blood, district:district })
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        let table="<tr><th>Name</th><th>Blood</th><th>City</th><th>Action</th></tr>";
 
-.then(res=>res.json())
-.then(data=>{
-
-let table="<tr><th>Name</th><th>Blood</th><th>City</th><th>Action</th></tr>";
-
-data.forEach(d=>{
-table+=`<tr>
-<td>${d.name}</td>
-<td>${d.blood_group}</td>
-<td>${d.city}</td>
-<td><button onclick="requestDirect('${d.phone}')">Send Request</button></td>
-</tr>`;
-});
-
-document.getElementById("result").innerHTML=table;
-
-});
-
+        if(data.length === 0) {
+            table += "<tr><td colspan='4' style='text-align:center;'>No active donors found in this district.</td></tr>";
+        } else {
+            data.forEach(d=>{
+            table+=`<tr>
+                <td>${d.name}</td>
+                <td><strong style="color:var(--primary);">${d.blood_group}</strong></td>
+                <td>${d.city}</td>
+                <td><button onclick="requestDirect('${d.phone}')">Direct Request 💬</button></td>
+                </tr>`;
+            });
+        }
+        document.getElementById("result").innerHTML=table;
+    })
+    .catch(()=>alert("Server error"));
 }
 
 function requestDirect(donorPhone) {
@@ -141,7 +100,6 @@ function requestDirect(donorPhone) {
     .then(data => alert(data))
     .catch(() => alert("Error connecting to server."));
 }
-
 </script>
 
 </body>

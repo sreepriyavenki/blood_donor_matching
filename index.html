@@ -1,115 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Blood Request Notifications</title>
-
+<title>Auto-Updating Notifications</title>
+<link rel="stylesheet" href="style.css">
 <style>
-
-body{
-font-family: Arial;
-
-height:100vh;
-margin:0;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-text-align:center;
-
-background-image:url("https://images.unsplash.com/photo-1505751172876-fa1923c5c528");
-background-size:cover;
-background-position:center;
-background-repeat:no-repeat;
-}
-
-.container{
-background:rgba(255,255,255,0.85);
-padding:30px;
-border-radius:10px;
-}
-
-button{
-padding:10px 20px;
-background:red;
-color:white;
-border:none;
-cursor:pointer;
-}
-
-table{
-margin-top:20px;
-border-collapse:collapse;
-background:white;
-}
-
-td,th{
-border:1px solid black;
-padding:10px;
-}
-
+    .flex-inputs {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    @media (max-width: 450px) {
+        .flex-inputs { flex-direction: column; gap: 0; }
+    }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-<h2>Blood Request Notifications</h2>
+<div class="container container-wide">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+        <h2 style="margin:0;">🔔 Auto-Updating Requests</h2>
+        <a href="menu.html" style="font-size:0.9rem; background:rgba(255,255,255,0.1); padding:8px 16px; border-radius:8px;">Dashboard</a>
+    </div>
+
+    <div class="flex-inputs">
+        <input type="text" id="district" placeholder="District Filter">
+        <button onclick="setDistrictLoad()" style="max-width: 200px;">Load</button>
+    </div>
+
+    <div style="overflow-x: auto; width: 100%;">
+        <table id="table"></table>
+    </div>
 </div>
 
-<table id="table"></table>
-
 <script>
+window.onload = function() {
+    const savedDistrict = localStorage.getItem("district");
+    if(savedDistrict) {
+        document.getElementById("district").value = savedDistrict;
+        load(savedDistrict);
+    }
+};
 
-window.onload = function(){
-
-const district = localStorage.getItem("district");
-
-fetch("http://localhost:5000/notifications",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({district:district})
-})
-
-.then(res=>res.json())
-.then(data=>{
-
-let html="<tr><th>Patient</th><th>Blood</th><th>Hospital</th><th>Action</th></tr>";
-
-data.forEach(r=>{
-
-html+=`
-<tr>
-<td>${r.patient_name}</td>
-<td>${r.blood_group}</td>
-<td>${r.hospital}</td>
-<td><button onclick="accept(${r.id})">Accept</button></td>
-</tr>
-`;
-
-});
-
-document.getElementById("table").innerHTML=html;
-
-});
-
+function setDistrictLoad() {
+    const district = document.getElementById("district").value;
+    localStorage.setItem("district", district);
+    load(district);
 }
 
+function load(district){
+    if(!district) return;
+    
+    fetch("http://localhost:5000/notifications",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({district:district})
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        let html="<tr><th>Patient</th><th>Blood</th><th>Hospital</th><th>Action</th></tr>";
+
+        if(data.length === 0) {
+            html += "<tr><td colspan='4' style='text-align:center;'>No pending requests!</td></tr>";
+        } else {
+            data.forEach(r=>{
+                html+=`
+                <tr>
+                <td>${r.patient_name}</td>
+                <td><strong style="color:var(--primary);">${r.blood_group}</strong></td>
+                <td>${r.hospital}</td>
+                <td><button onclick="accept(${r.id})">Accept Request</button></td>
+                </tr>`;
+            });
+        }
+        document.getElementById("table").innerHTML=html;
+    })
+    .catch(()=>alert("Server error"));
+}
 
 function accept(id){
-
-fetch("http://localhost:5000/accept",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({id:id})
-})
-.then(res=>res.text())
-.then(data=>{
-alert(data);
-location.reload();
-});
-
+    if(confirm("Are you sure you want to accept this request and commit to donating blood?")) {
+        fetch("http://localhost:5000/accept",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({id:id})
+        })
+        .then(res=>res.text())
+        .then(data=>{
+            alert(data);
+            setDistrictLoad(); // refresh
+        });
+    }
 }
-
 </script>
 
 </body>

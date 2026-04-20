@@ -2,96 +2,64 @@
 <html>
 <head>
 <title>Donor Registration</title>
-
+<link rel="stylesheet" href="style.css">
 <style>
-
-body{
-    font-family: Arial;
-    height:100vh;
-    margin:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    background-image:url("https://images.unsplash.com/photo-1505751172876-fa1923c5c528");
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-}
-
-.container{
-    background:rgba(255,255,255,0.88);
-    padding:35px 40px;
-    border-radius:12px;
-    width:340px;
-}
-
-h2{
-    color:#c1121f;
-    margin-bottom:20px;
-}
-
-input, select{
-    padding:10px;
-    width:100%;
-    margin-bottom:12px;
-    border:1px solid #ccc;
-    border-radius:5px;
-    box-sizing:border-box;
-    font-size:14px;
-}
-
-button{
-    padding:12px 30px;
-    background:#e63946;
-    color:white;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-    font-size:16px;
-    width:100%;
-    margin-top:5px;
-}
-
-button:hover{
-    background:#c1121f;
-}
-
+    .split-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    .full-width {
+        grid-column: span 2;
+    }
+    @media (max-width: 450px) {
+        .split-grid {
+            grid-template-columns: 1fr;
+        }
+        .full-width {
+            grid-column: span 1;
+        }
+    }
+    .back-btn {
+        margin-top: 15px;
+        background: transparent;
+        border: 1px solid var(--border);
+    }
+    .back-btn:hover {
+        background: rgba(255,255,255,0.1);
+        box-shadow: none;
+    }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="container" style="max-width: 500px;">
+    <h2>🩸 Donor Registration</h2>
+    <form id="registerForm" class="split-grid">
+        <input type="text" id="name" placeholder="Full Name" class="full-width" required>
+        <input type="email" id="email" placeholder="Email" class="full-width" required>
+        <input type="tel" id="phone" placeholder="Phone (10 digits)" maxlength="10" required>
+        <input type="text" id="blood_group" placeholder="Blood Group (e.g. A+)" required>
+        <input type="text" id="district" placeholder="District" required>
+        <input type="text" id="city" placeholder="City" required>
+        <input type="text" id="area" placeholder="Area / Locality" required>
+        <input type="text" id="health_status" placeholder="Health (Good/Fair)" required>
+        
+        <input type="date" id="last_donation_date" class="full-width" title="Last Donation Date">
+        
+        <select id="availability" class="full-width" required>
+            <option value="" disabled selected hidden>-- Availability to Donate --</option>
+            <option value="Yes">Yes - Available immediately</option>
+            <option value="No">No - Not available right now</option>
+        </select>
 
-<h2>🩸 Donor Registration</h2>
-
-<form id="registerForm">
-
-    <input type="text"   id="name"               placeholder="Full Name"          required>
-    <input type="email"  id="email"              placeholder="Email"               required>
-    <input type="tel"    id="phone"              placeholder="Phone Number (10 digits)" maxlength="10" required>
-    <input type="text"   id="blood_group"        placeholder="Blood Group (e.g. A+)" required>
-    <input type="text"   id="district"           placeholder="District"            required>
-    <input type="text"   id="city"               placeholder="City"                required>
-    <input type="text"   id="area"               placeholder="Area / Locality"     required>
-    <input type="text"   id="health_status"      placeholder="Health Status (Good/Fair)" required>
-    <input type="date"   id="last_donation_date" placeholder="Last Donation Date">
-
-    <select id="availability">
-        <option value="">-- Availability --</option>
-        <option value="Yes">Yes - Available to Donate</option>
-        <option value="No">No - Not Available</option>
-    </select>
-
-    <button type="submit">Register as Donor</button>
-
-</form>
-
+        <button type="submit" class="full-width">Register as Donor</button>
+        <button type="button" class="full-width back-btn" onclick="window.location.href='menu.html'">Back to Dashboard</button>
+    </form>
 </div>
 
 <script>
-
 document.getElementById("registerForm").addEventListener("submit", function(e){
     e.preventDefault();
 
@@ -115,12 +83,11 @@ document.getElementById("registerForm").addEventListener("submit", function(e){
     .then(data=>{
         alert(data);
         if(data === "Donor Registered Successfully"){
-            document.getElementById("registerForm").reset();
+            window.location.href = "menu.html";
         }
     })
     .catch(()=>alert("Server not running"));
 });
-
 </script>
 
 </body>

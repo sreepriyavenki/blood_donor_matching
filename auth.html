@@ -3,78 +3,41 @@
 <head>
 <title>Authentication</title>
 
-<style>
-
-body{
-    font-family: Arial;
-    height:100vh;
-    margin:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    background-image: url("https://images.unsplash.com/photo-1505751172876-fa1923c5c528");
-    background-size: cover;
-}
-
-#signupForm, #loginForm{
-    background: rgba(255,255,255,0.85);
-    padding:30px;
-    border-radius:10px;
-}
-
-input{
-    padding:10px;
-    width:250px;
-}
-
-button{
-    padding:10px 25px;
-    background:red;
-    color:white;
-    border:none;
-}
-
-a{
-    cursor:pointer;
-    color:blue;
-}
-
-</style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <!-- SIGNUP -->
-<div id="signupForm">
+<div id="signupForm" class="container">
 
 <h2>Sign Up</h2>
 
-<input type="email" id="s_email" placeholder="Email"><br><br>
-<input type="password" id="s_password" placeholder="Password"><br><br>
-<input type="password" id="s_confirm" placeholder="Confirm Password"><br><br>
+<input type="email" id="s_email" placeholder="Email"><br>
+<input type="password" id="s_password" placeholder="Password"><br>
+<input type="password" id="s_confirm" placeholder="Confirm Password"><br>
 
 <button onclick="signup()">Sign Up</button>
 
-<p>
-Already have an account?
+<p class="toggle-text">
+Already have an account? 
 <a onclick="showLogin()">Login</a>
 </p>
 
 </div>
 
 <!-- LOGIN -->
-<div id="loginForm" style="display:none;">
+<div id="loginForm" class="container" style="display:none;">
 
 <h2>Login</h2>
 
-<input type="email" id="l_email" placeholder="Email"><br><br>
-<input type="password" id="l_password" placeholder="Password"><br><br>
+<input type="email" id="l_email" placeholder="Email"><br>
+<input type="password" id="l_password" placeholder="Password"><br>
 
 <button onclick="login()">Login</button>
 
-<p>
-Don't have an account?
+<p class="toggle-text">
+Don't have an account? 
 <a onclick="showSignup()">Sign Up</a>
 </p>
 

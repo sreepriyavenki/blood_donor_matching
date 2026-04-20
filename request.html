@@ -1,99 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Blood Request</title>
-
+<title>Global Blood Request</title>
+<link rel="stylesheet" href="style.css">
 <style>
-
-body{
-    font-family: Arial;
-
-    height:100vh;
-    margin:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-
-    background-image:url("https://images.unsplash.com/photo-1505751172876-fa1923c5c528");
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-}
-
-.container{
-    background:rgba(255,255,255,0.85);
-    padding:30px;
-    border-radius:10px;
-}
-
-input{
-    padding:10px;
-    width:250px;
-}
-
-button{
-    padding:10px 20px;
-    background:red;
-    color:white;
-    border:none;
-    cursor:pointer;
-}
-
+    .split-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    .full-width {
+        grid-column: span 2;
+    }
+    @media (max-width: 450px) {
+        .split-grid { grid-template-columns: 1fr; }
+        .full-width { grid-column: span 1; }
+    }
 </style>
-
 </head>
 
 <body>
 
-<div class="container">
+<div class="container" style="max-width: 500px;">
+    <h2>🚨 Global Blood Request</h2>
+    <p style="margin-top:-15px; margin-bottom:20px; font-size:0.9rem;">
+        Submit a global request. We will immediately text all matching donors in the district.
+    </p>
 
-<h2>Blood Request Form</h2>
+    <form id="requestForm" class="split-grid">
+        <input type="text" id="patient" placeholder="Patient Name" class="full-width" required>
+        <input type="text" id="blood" placeholder="Blood Group Needed (e.g. O-)" required>
+        <input type="text" id="district" placeholder="District" required>
+        <input type="text" id="city" placeholder="City" required>
+        <input type="text" id="contact" placeholder="Contact Number" required>
+        <input type="text" id="hospital" placeholder="Hospital Name" class="full-width" required>
 
-<form id="requestForm">
-
-<input type="text" id="patient" placeholder="Patient Name"><br><br>
-
-<input type="text" id="blood" placeholder="Blood Group Needed"><br><br>
-
-<input type="text" id="district" placeholder="District"><br><br>
-
-<input type="text" id="city" placeholder="City"><br><br>
-
-<input type="text" id="hospital" placeholder="Hospital"><br><br>
-
-<input type="text" id="contact" placeholder="Contact Number"><br><br>
-
-<button type="submit">Request Blood</button>
-
-</form>
-
+        <button type="submit" class="full-width" style="margin-top:10px;">Broadcast Request & SMS Donors</button>
+        <button type="button" class="full-width" style="background:transparent; border:1px solid var(--border);" onclick="window.location.href='menu.html'">Back to Dashboard</button>
+    </form>
 </div>
 
-
 <script>
-
 document.getElementById("requestForm").addEventListener("submit",function(e){
+    e.preventDefault();
 
-e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.innerText = "Sending...";
+    btn.disabled = true;
 
-fetch("http://localhost:5000/request",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
-patient_name:document.getElementById("patient").value,
-blood_group:document.getElementById("blood").value,
-district:document.getElementById("district").value,
-city:document.getElementById("city").value,
-hospital:document.getElementById("hospital").value,
-contact:document.getElementById("contact").value
-})
-})
-.then(res=>res.text())
-.then(data=>alert(data));
-
+    fetch("http://localhost:5000/request",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            patient_name: document.getElementById("patient").value,
+            blood_group:  document.getElementById("blood").value,
+            district:     document.getElementById("district").value,
+            city:         document.getElementById("city").value,
+            hospital:     document.getElementById("hospital").value,
+            contact:      document.getElementById("contact").value
+        })
+    })
+    .then(res=>res.text())
+    .then(data=>{
+        alert(data);
+        btn.innerText = "Broadcast Request & SMS Donors";
+        btn.disabled = false;
+        e.target.reset();
+    })
+    .catch(()=>{
+        alert("Server Error");
+        btn.innerText = "Broadcast Request & SMS Donors";
+        btn.disabled = false;
+    });
 });
-
 </script>
 
 </body>
